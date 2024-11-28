@@ -43,10 +43,10 @@ class decision_maker(Node):
         publishing_period=1/rate
 
         # TODO PART 5 choose your threshold
-        self.reachThreshold=...
+        self.reachThreshold=0.5
 
-        # TODO PART 5 your localization type
-        self.localizer=localization(...)
+        # DONE PART 5 your localization type
+        self.localizer=localization(kalmanFilter)
 
 
         
@@ -56,8 +56,13 @@ class decision_maker(Node):
 
         
         elif motion_type==TRAJECTORY_PLANNER:
-            # TODO PART 5 Bonus Put the gains that you conclude from lab 2
-            self.controller=trajectoryController(...)      
+            # DONE PART 5 Bonus Put the gains that you conclude from lab 2
+            self.controller=trajectoryController(klp=0.2,
+                                                 klv=0.1,
+                                                 kli=0.1,
+                                                 kap=0.5,
+                                                 kav=0.6,
+                                                 kai=0.5)      
             self.planner=planner(TRAJECTORY_PLANNER)
         
         else:
