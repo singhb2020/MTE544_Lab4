@@ -61,16 +61,20 @@ def search(maze, start, end):
         :param end:
         :return:
     """
+    #heuristic = "euclidian"
+    heuristic = "manhattane"
     # Review
     # DONE PART 4 Create start and end node with initized values for g, h and f
     # Use None as parent if not defined
-    start_node = Node(parent=None, position=start.position)
+    start_node = Node(parent=None, position=start)
     start_node.g = 0     # cost from start Node
-    start_node.h = sqrt((end.position[0] - start.position[0])**2 + (end.position[1] - start.position[1])**2) #Euclidean     # heuristic estimated cost to end Node
-    start_node.h = (end.position[0] - start.position[0]) + (end.position[1] - start.position[1]) #Manhattan
+    if (heuristic == "euclidian"):
+        start_node.h = sqrt((end[0] - start[0])**2 + (end[1] - start[1])**2) #Euclidean     # heuristic estimated cost to end Node
+    else:
+        start_node.h = (end[0] - start[0]) + (end[1] - start[1]) #Manhattan
     start_node.f = start_node.g + start_node.h
 
-    end_node = Node(parent=None, position=end.position)
+    end_node = Node(parent=None, position=end)
     end_node.g = 1000       # set a large value if not defined
     end_node.h = 0       # heuristic estimated cost to end Node
     end_node.f = end_node.g + end_node.h
@@ -93,14 +97,20 @@ def search(maze, start, end):
 
     # DONE PART 4 what squares do we search . serarch movement is left-right-top-bottom
     # (4 or 8 movements) from every positon
-    move = [[0, 1],  # go up
-            [-1, 0],  # go left
-            [0, -1],  # go down
-            [1, 0],  # go right
-            [-1, 1],  # go up left
-            [-1, -1],  # go down left
-            [1, 1],  # go up right
-            [1, -1]]  # go down right
+    if (heuristic == "euclidian"):
+        move = [[0, 1],  # go up
+                [-1, 0],  # go left
+                [0, -1],  # go down
+                [1, 0],  # go right
+                [-1, 1],  # go up left
+                [-1, -1],  # go down left
+                [1, 1],  # go up right
+                [1, -1]]  # go down right
+    else:
+        move = [[0, 1],  # go up
+                [-1, 0],  # go left
+                [0, -1],  # go down
+                [1, 0]]  # go right
 
     """
         1) We first get the current node by comparing all f cost and selecting the lowest cost node for further expansion
@@ -162,8 +172,7 @@ def search(maze, start, end):
                              current_node.position[1] + new_position[1])
 
             # DONE PART 4 Make sure within range (check if within maze boundary)
-            if ((node_position[0] < 0 or node_position[0] > no_columns) or
-                node_position[1] < 0 or node_position[1] > no_rows):
+            if ((node_position[0] < 0 or node_position[0] >= no_columns) or node_position[1] < 0 or node_position[1] >= no_rows):
                 continue
 
             # Make sure walkable terrain
@@ -181,14 +190,22 @@ def search(maze, start, end):
         for child in children:
 
             # DONE PART 4 Child is on the visited dict (use get method to check if child is in visited dict, if not found then default value is False)
-            if (visited_dict.get(child.position) is None):
+            if (visited_dict.get(child.position) is not None):
                 continue
 
             # DONE PART 4 Create the f, g, and h values
-            child.g = child.parent.g + sqrt((child.position[0] - child.parent.position[0])**2 + (child.position[1] - child.parent.position[1])**2)
-            # Heuristic costs calculated here, this is using eucledian distance
-            child.h = sqrt((end_node.position[0]-child.position[0])**2 +
-                           (end_node.position[1]-child.position[1])**2)
+            if (heuristic == "euclidian"):
+                child.g = child.parent.g + sqrt((
+                    child.position[0] - child.parent.position[0])**2 + (
+                    child.position[1] - child.parent.position[1])**2)
+            else:
+                child.g = child.parent.g + (child.position[0] - child.parent.position[0]) + (child.position[1] - child.parent.position[1])
+
+            # Heuristic costs calculated here
+            if (heuristic == "euclidian"):
+                child.h = sqrt((end_node.position[0]-child.position[0])**2 + (end_node.position[1]-child.position[1])**2)
+            else:
+                child.h = (end_node.position[0]-child.position[0]) + (end_node.position[1]-child.position[1])
 
             child.f = child.g + child.h
 
