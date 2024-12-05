@@ -43,10 +43,10 @@ class decision_maker(Node):
         publishing_period=1/rate
 
         # TODO PART 5 choose your threshold
-        self.reachThreshold=0.05
+        self.reachThreshold=0.1
 
         # DONE PART 5 your localization type
-        self.localizer=localization(kalmanFilter)
+        self.localizer=localization(kalmanFilter, "pose.csv", ["odom_x", "odom_y", "theta", "stamp"])
 
 
         
