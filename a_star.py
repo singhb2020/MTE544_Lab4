@@ -61,9 +61,11 @@ def search(maze, start, end):
         :param end:
         :return:
     """
+
+    # Flag for switching between Manhattan and Euclidian
     #heuristic = "euclidian"
-    heuristic = "manhattane"
-    # Review
+    heuristic = "manhattan"
+
     # DONE PART 4 Create start and end node with initized values for g, h and f
     # Use None as parent if not defined
     start_node = Node(parent=None, position=start)
@@ -95,7 +97,8 @@ def search(maze, start, end):
     outer_iterations = 0
     max_iterations = (len(maze) // 2) ** 10
 
-    # DONE PART 4 what squares do we search . serarch movement is left-right-top-bottom
+    # DONE PART 4 what squares do we search
+    # search movement is left-right-top-bottom
     # (4 or 8 movements) from every positon
     if (heuristic == "euclidian"):
         move = [[0, 1],  # go up
@@ -116,7 +119,7 @@ def search(maze, start, end):
         1) We first get the current node by comparing all f cost and selecting the lowest cost node for further expansion
         2) Check max iteration reached or not . Set a message and stop execution
         3) Remove the selected node from yet_to_visit dict and add this node to visited dict
-        4) Perofmr Goal test and return the path else perform below steps
+        4) Perform Goal test and return the path else perform below steps
         5) For selected node find out all children (use move to find children)
             a) get the current postion for the selected node (this becomes parent node for the children)
             b) check if a valid position exist (boundary will make few nodes invalid)
@@ -129,7 +132,7 @@ def search(maze, start, end):
                 c) if child in yet_to_visit dict then ignore it
                 d) else move the child to yet_to_visit dict
     """
-    # DONE PART 4 find maze has got how many rows and columns
+    # DONE PART 4 find maze gets how many rows and columns
     no_rows, no_columns = np.shape(maze)
 
     # Loop until you find the end

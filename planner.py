@@ -48,8 +48,12 @@ class planner:
         endPose=self.m_utilites.position_2_cell(endPoseCart)
         
         # DONE PART 5 convert the cell pixels into the cartesian coordinates
+        
+        # Search for the best path using A*
         path = search(self.m_utilites.getLikelihoodField(), startPose, endPose)
-        print(type(path))
+
+        # Create the path in terms of cartesian point to follow
+        # Cast the path to map then list
         Path = list(map(self.m_utilites.cell_2_position, path))
 
 
