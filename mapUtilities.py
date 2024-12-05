@@ -285,6 +285,7 @@ if __name__=="__main__":
     args = parser.parse_args()
 
     MAP_UTILITIS=mapManipulator(args.map, args.std)
+    MAP_UTILITIS.plot_pgm_image(MAP_UTILITIS.getMap())
 
     #rclpy.spin(MAP_UTILITIS)
 
